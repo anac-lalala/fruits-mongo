@@ -2,72 +2,66 @@ const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost:27017/fruitsDB", {
   useNewUrlParser: true,
+  // keepAlive: false,
 });
 
 const fruitSchema = new mongoose.Schema({
-  name: String,
-  rating: Number,
+  name: {
+    type: String,
+    required: [true, "Oh nono you forgot the name of the fruit D:"],
+  },
+  rating: {
+    type: Number,
+    min: 1,
+    max: 10,
+  },
   review: String,
 });
 
+const peopleSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "this person neads a name"],
+  },
+  age: {
+    type: Number,
+  },
+});
+
 const Fruit = mongoose.model("Fruit", fruitSchema);
+const Person = mongoose.model("Person", peopleSchema);
 
-const fruit = new Fruit({
-  name: "Apple",
-  rating: 7,
-  review: "Pretty solid as a fruit.",
+const pear = new Fruit({
+  name: "Pear",
+  rating: 3,
+  review: "Not so popular as a fruit",
 });
-
-// fruit.save();
-
-const personSchema = new mongoose.Schema({
-  name: String,
-  age: Number,
-});
-
-const Person = mongoose.model("Person", personSchema);
 
 const person = new Person({
-  name: "John",
-  age: 37,
+  name: "Paul",
+  rating: 31,
 });
 
-// person.save();
-
-const kiwy = new Fruit({
-  name: "Kiwi",
-  rating: 10,
-  review: "The best fruit!",
-});
-
-const orange = new Fruit({
-  name: "Orange",
-  rating: 10,
-  review: "Citric and sou :)",
-});
-
-const banana = new Fruit({
-  name: "Banana",
-  rating: 6,
-  review: "To sweet but greener is best",
-});
-
-// Fruit.insertMany([kiwy, orange, banana], (err) => {
+// pear.save(function (err, result) {
 //   if (err) {
 //     console.log(err);
 //   } else {
-//     console.log("success adding to fruitsDB");
+//     console.log(result);
 //   }
 // });
+
+// person.save();
 
 Fruit.find((err, fruits) => {
   if (err) {
     console.log(err);
   } else {
-    mongoose.disconnect();
-
-    fruits.forEach((fruit) => {
-      console.log(fruit.name);
+    console.log(fruits);
+    // fruits.forEach((fruit) => {
+    //   console.log(fruit.name);
+    // });
+    mongoose.disconnect(function () {
+      console.log("Mongoose connection disconnected");
     });
   }
 });
