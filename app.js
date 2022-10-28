@@ -26,42 +26,62 @@ const peopleSchema = new mongoose.Schema({
   age: {
     type: Number,
   },
+  favFruit: fruitSchema,
 });
 
 const Fruit = mongoose.model("Fruit", fruitSchema);
 const Person = mongoose.model("Person", peopleSchema);
 
-const pear = new Fruit({
-  name: "Pear",
-  rating: 3,
-  review: "Not so popular as a fruit",
+const blueberry = new Fruit({
+  name: "Blueberry",
+  rating: 7,
+  review: "Somewhat expensive but a superfood",
 });
 
-const person = new Person({
-  name: "Paul",
-  rating: 31,
-});
-
-// pear.save(function (err, result) {
-//   if (err) {
-//     console.log(err);
-//   } else {
-//     console.log(result);
-//   }
+// const person = new Person({
+//   name: "Lucy",
+//   rating: 33,
+//   favFruit: pinapple,
 // });
 
-// person.save();
-
-Fruit.find((err, fruits) => {
+// -------- Creating items inside collections
+blueberry.save(function (err, result) {
   if (err) {
     console.log(err);
   } else {
-    console.log(fruits);
-    // fruits.forEach((fruit) => {
-    //   console.log(fruit.name);
-    // });
-    mongoose.disconnect(function () {
-      console.log("Mongoose connection disconnected");
-    });
+    console.log(result);
   }
 });
+
+// person.save();
+
+// -------- Updating items inside collections
+
+Person.updateOne({ name: "Jhon", favFruit });
+// Fruit.updateOne(
+//   { _id: "632e6929e1ffd2fd1ad8769f" },
+//   { review: "Sweet and citric" },
+//   function (err, res) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(res);
+
+//       Fruit.find((err, fruits) => {
+//         if (err) {
+//           console.log(err);
+//         } else {
+//           console.log(fruits);
+//           // fruits.forEach((fruit) => {
+//           //   console.log(fruit.name);
+//           // });
+
+//           // Closing connection must be after last task
+//           mongoose.connection.close(function () {
+//             console.log("Mongoose connection disconnected");
+//           });
+//         }
+//       });
+//     }
+//   }
+// );
